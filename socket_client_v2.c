@@ -15,8 +15,9 @@ int main()
     // specify an address for the socket
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(9001);
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);   //0x00000000
+    server_addr.sin_port = htons(9002);
+    server_addr.sin_addr.s_addr = htonl(0xC0A80009);   
+    //server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int connection_status = connect(net_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
     // check for error with the connection
@@ -25,7 +26,7 @@ int main()
     
     char server_resp[256];
     int count = recv(net_socket, server_resp, sizeof(server_resp), 0);
-    printf("The server sent the data %s to the client.\n", server_resp);
+    printf("The client received the data %s from the server.\n", server_resp);
     printf("%d bytes in total.\n", count);
 
     // close the socket
