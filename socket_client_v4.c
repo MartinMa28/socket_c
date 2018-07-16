@@ -5,6 +5,7 @@
 #include<sys/socket.h>
 
 #include<netinet/in.h>
+#include<unistd.h>
 
 int main()
 {
@@ -27,23 +28,38 @@ int main()
     char connect_info[256] = "connect to server\n";
     send(net_socket, connect_info, sizeof(connect_info), 0);
     printf("client reached the server\n");
+    
+    
     int rand_buf[10];
-    int count = recv(net_socket, rand_buf, sizeof(rand_buf), 0);
+    int count;
     int i;
-    for(i=0;i<10;i++)
-    {
-        printf("%d\n", rand_buf[i]);
-    }
-    printf("%d bytes in total\n", count);
 
-    int count = recv(net_socket, rand_buf, sizeof(rand_buf), 0);
-    int i;
-    for(i=0;i<10;i++)
+    int child = fork();
+    if(child < 0)
     {
-        printf("%d\n", rand_buf[i]);
+        perror("fork error!");
     }
-    printf("%d bytes in total\n", count);
-
+    else if(child == 0)
+    {
+        // in the children process
+        count = recv(net_socket, rand_buf, sizeof(rand_buf), 0);
+        for(i=0;i<10;i++)
+        {
+            printf("%d\n", rand_buf[i]);
+        }
+        printf("%d bytes in total\n", count);
+    }
+    else
+    {
+        // in the parent process, in which case, child == the PID of the children process
+        count = recv(net_socket, rand_buf, sizeof(rand_buf), 0);
+        for(i=0;i<10;i++)
+        {
+            printf("%d\n", rand_buf[i]);
+        }
+        printf("%d bytes in total\n", count);
+    }
+    
     // close the socket
     close(net_socket);
 
