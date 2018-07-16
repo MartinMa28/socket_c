@@ -24,7 +24,7 @@ int main()
     if(connection_status == -1)
         printf("There was an error making a connection to the remote socket.\n");
     
-    char connect_info[256] = "connect to server";
+    char connect_info[256] = "connect to server\n";
     send(net_socket, connect_info, sizeof(connect_info), 0);
     printf("client reached the server\n");
     int rand_buf[10];

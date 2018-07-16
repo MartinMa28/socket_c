@@ -30,7 +30,7 @@ int main()
     struct sockaddr_in client_addr;
     client_addr.sin_family = AF_INET;
     client_addr.sin_port = htons(9001);
-    client_addr.sin_addr.s_addr = ntohl(0xC0A80005);
+    client_addr.sin_addr.s_addr = ntohl(0xC0A80003);
     //client_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     int client_addr_len;
     client_addr_len = sizeof(client_addr);
@@ -45,10 +45,11 @@ int main()
     srand(time(NULL));
 
     int i;
-    int *rand_buf;
+    int rand_buf[10];
     for(i=0;i<10;i++)
     {
         rand_buf[i] = rand()%10;
+        printf("%d ",rand_buf[i]);
     }
 
     count = send(client_socket, rand_buf, sizeof(rand_buf), 0);
